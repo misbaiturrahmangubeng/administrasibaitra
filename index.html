@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html lang="id">
 <head>
-    <title>Sistem Keuangan | Pondok Al-Barokah</title>
+    <title>Sistem Keuangan | MIS BAITURRAHMAN GUBENG</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <base target="_top">
@@ -99,7 +99,7 @@
     <div v-if="!isLoggedIn" class="d-flex align-items-center justify-content-center" style="height: 100vh;">
         <div class="card card-custom p-4 shadow-lg" style="width: 350px;">
             <div class="text-center mb-4">
-                <img src="https://lh3.googleusercontent.com/d/1hI7bEuwg6-FOe_NWIq-HMR6H_q_JmiM_" width="80" style="border-radius: 50%; margin-bottom: 10px;" onerror="this.src='https://via.placeholder.com/80/3498db/ffffff?text=BI'">
+                <img src="https://lh3.googleusercontent.com/d/18e1v76BALeQYgi3J4cvN5KE94tdBcR4W" width="80" style="border-radius: 50%; margin-bottom: 10px;" onerror="this.src='https://via.placeholder.com/80/3498db/ffffff?text=BI'">
                 <h5 class="mt-3 fw-bold text-primary">Login Sistem</h5>
             </div>
             
@@ -129,7 +129,7 @@
         
         <nav id="sidebar" :class="{'open': sidebarOpen}">
             <div class="sidebar-brand">
-                <h6 class="fw-bold m-0 text-white"><i class="fa-solid fa-building-columns me-2"></i>Pondok Al-Barokah</h6>
+                <h6 class="fw-bold m-0 text-white"><i class="fa-solid fa-building-columns me-2"></i>MIS BAITURRAHMAN GUBENG</h6>
             </div>
             <div class="text-center py-2 bg-dark" style="font-size:11px; color:#bbb;">
                 Login: <span class="fw-bold text-warning text-uppercase"><i class="fa-solid fa-user-shield me-1"></i> {{ session.role }}</span>
@@ -524,7 +524,7 @@
                 
                 <div id="invoice-print-area" v-if="cetakData">
                     <div class="invoice-kop">
-                        <img src="https://lh3.googleusercontent.com/d/1hI7bEuwg6-FOe_NWIq-HMR6H_q_JmiM_" width="80" style="margin-right: 15px;" onerror="this.style.display='none'">
+                        <img src="https://lh3.googleusercontent.com/d/18e1v76BALeQYgi3J4cvN5KE94tdBcR4W" width="80" style="margin-right: 15px;" onerror="this.style.display='none'">
                         <div>
                             <h3 class="m-0 fw-bold">BUKTI PEMBAYARAN</h3>
                             <p class="m-0 text-muted small">Sistem Administrasi Terpadu</p>
@@ -564,7 +564,7 @@
                 
                 <div id="riwayat-print-area" v-if="cetakRiwayatData">
                     <div class="invoice-kop">
-                        <img src="https://lh3.googleusercontent.com/d/1hI7bEuwg6-FOe_NWIq-HMR6H_q_JmiM_" width="80" style="margin-right: 15px;" onerror="this.style.display='none'">
+                        <img src="https://lh3.googleusercontent.com/d/18e1v76BALeQYgi3J4cvN5KE94tdBcR4W" width="80" style="margin-right: 15px;" onerror="this.style.display='none'">
                         <div>
                             <h3 class="m-0 fw-bold">RIWAYAT PEMBAYARAN SISWA</h3>
                             <p class="m-0 text-muted small">Sistem Administrasi Terpadu</p>
@@ -600,7 +600,7 @@
             </div>
             
             <footer class="text-center py-3 text-muted no-print" style="font-size: 11px;">
-                © 2026 <strong>Aplikasi Keuangan Pondok Al-Barokah</strong> | Belajar Inovasi
+                © 2026 <strong>Aplikasi Keuangan MIS BAITURRAHMAN GUBENG</strong> | Belajar Inovasi
             </footer>
         </div>
         
@@ -1090,7 +1090,7 @@ createApp({
             const siswa = this.listSiswa.find(s => s.nama === group.nama);
             const noHp = siswa ? this.formatNoWA(siswa.noHp) : '';
             
-            let text = `*INFO TAGIHAN Pondok Al-Barokah*\nSistem Administrasi Terpadu - Belajar Inovasi\n\nNama Siswa: ${group.nama}\n\nRincian Tunggakan Belum Dibayar:\n`;
+            let text = `*INFO TAGIHAN MIS BAITURRAHMAN GUBENG*\nSistem Administrasi Terpadu - Belajar Inovasi\n\nNama Siswa: ${group.nama}\n\nRincian Tunggakan Belum Dibayar:\n`;
             group.details.forEach((r, i) => {
                 text += `${i+1}. ${r[3]} (Sisa: ${this.formatRp(r[6])})\n`;
             });
@@ -1305,7 +1305,7 @@ createApp({
                 const res = await this.apiCall('prosesPembayaranSiswa', { payload: payload });
                 this.loading = false;
                 if(res.success) {
-                    let textWA = `*BUKTI PEMBAYARAN Pondok Al-Barokah*\nSistem Administrasi Terpadu - Belajar Inovasi\n\nNama Siswa: ${payload.siswa.nama}\nNo. Invoice: ${payload.invoice}\nTanggal: ${payload.tglBayar}\n\nRincian Pembayaran:\n`;
+                    let textWA = `*BUKTI PEMBAYARAN MIS BAITURRAHMAN GUBENG*\nSistem Administrasi Terpadu - Belajar Inovasi\n\nNama Siswa: ${payload.siswa.nama}\nNo. Invoice: ${payload.invoice}\nTanggal: ${payload.tglBayar}\n\nRincian Pembayaran:\n`;
                     payload.items.forEach(i => { textWA += `- ${i.jenis} : ${this.formatRp(i.nilai_bayar)}\n`; });
                     textWA += `\n*Total Dibayar: ${this.formatRp(payload.total)}*\n\nTerima kasih atas pembayarannya.`;
                     

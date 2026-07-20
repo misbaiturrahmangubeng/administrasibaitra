@@ -16,29 +16,36 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
     <style>
-        :root { --sidebar-bg: #2c3e50; --header-bg: #3498db; --bg-light: #f4f7fa; }
-        body { font-family: 'Poppins', sans-serif; background: var(--bg-light); font-size: 13px; color: #333; overflow-x: hidden; margin:0; padding:0; }
+        /* TEMA BARU: Ungu & Peach */
+        :root { 
+            --sidebar-bg: #4a235a; /* Ungu gelap */
+            --header-bg: linear-gradient(90deg, #8e44ad, #d2b4de); /* Gradasi ungu */
+            --bg-light: linear-gradient(135deg, #fdebd0 0%, #f4ecf7 100%); /* Peach ke Ungu muda */
+        }
+        body { font-family: 'Poppins', sans-serif; background: var(--bg-light); background-attachment: fixed; font-size: 13px; color: #333; overflow-x: hidden; margin:0; padding:0; }
         
         .wrapper { display: flex; height: 100vh; overflow: hidden; position: relative; }
         #sidebar { width: 250px; background: var(--sidebar-bg); color: #fff; overflow-y: auto; transition: transform 0.3s ease; flex-shrink: 0; z-index: 1050; }
-        .sidebar-brand { background: #1a252f; padding: 15px 20px; text-align: center; }
-        .menu-header { font-size: 10px; text-transform: uppercase; color: #95a5a6; padding: 15px 20px 5px; font-weight: bold; }
-        .nav-link { color: #bdc3c7; padding: 10px 20px; display: block; text-decoration: none; transition: 0.2s; cursor: pointer; }
+        .sidebar-brand { background: #311432; padding: 15px 20px; text-align: center; }
+        .menu-header { font-size: 10px; text-transform: uppercase; color: #d7bde2; padding: 15px 20px 5px; font-weight: bold; }
+        .nav-link { color: #ebdef0; padding: 10px 20px; display: block; text-decoration: none; transition: 0.2s; cursor: pointer; }
         .nav-link i { width: 25px; text-align: center; font-size: 14px;}
-        .nav-link:hover, .nav-link.active { background: #34495e; color: #fff; border-left: 3px solid #3498db; }
+        .nav-link:hover, .nav-link.active { background: #5b2c6f; color: #fff; border-left: 3px solid #ffdab9; } /* Aksen Peach */
         .sidebar-overlay { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5); z-index: 1040; }
         
         @media (max-width: 768px) {
             #sidebar { position: fixed; height: 100vh; transform: translateX(-100%); }
             #sidebar.open { transform: translateX(0); }
             .sidebar-overlay.show { display: block; }
+            .dash-card { margin-bottom: 15px; } /* Jarak antar card di mobile */
+            .btn-action { margin-bottom: 5px; } /* Jarak tombol aksi di mobile */
         }
         
         #content { flex: 1; display: flex; flex-direction: column; overflow-y: auto; width: 100%; }
         .top-navbar { background: var(--header-bg); height: 50px; display: flex; align-items: center; padding: 0 20px; color: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); z-index: 10; }
         .main-container { padding: 20px; flex: 1; }
         
-        .card-custom { background: #fff; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 20px; border: none; }
+        .card-custom { background: rgba(255, 255, 255, 0.95); border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; border: none; }
         .dash-card { padding: 20px; border-radius: 8px; color: #fff; position: relative; overflow: hidden; }
         .dash-card h3 { margin: 0; font-weight: 700; font-size: 22px; }
         .dash-card p { margin: 0; font-size: 12px; opacity: 0.9; }
@@ -49,7 +56,7 @@
         [v-cloak] { display: none; }
         .loading-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.8); z-index:9999; display:flex; flex-direction: column; align-items:center; justify-content:center; }
         .modal-custom { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index: 1060; display:flex; align-items:center; justify-content:center; }
-        .modal-body-custom { background:#fff; width: 90%; max-width: 750px; border-radius: 10px; padding: 25px; max-height: 90vh; overflow-y: auto; }
+        .modal-body-custom { background:#fff; width: 95%; max-width: 750px; border-radius: 10px; padding: 25px; max-height: 90vh; overflow-y: auto; }
         .modal-body-custom.sm { max-width: 500px; }
         .swal2-container { z-index: 99999 !important; }
         
@@ -59,9 +66,13 @@
         .btn-action:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
         
         .row-parent { cursor: pointer; transition: background 0.2s; }
-        .row-parent:hover { background-color: #f1f8ff !important; }
-        .row-child-container { background-color: #fafbfc; padding: 15px; border-left: 4px solid #3498db; }
+        .row-parent:hover { background-color: #f5eef8 !important; } /* Aksen hover ungu muda */
+        .row-child-container { background-color: #fafbfc; padding: 15px; border-left: 4px solid #8e44ad; }
         
+        /* Chip filter pencarian */
+        .chip-filter { display: inline-block; padding: 4px 12px; border-radius: 15px; background: #ebdef0; color: #5b2c6f; font-size: 11px; cursor: pointer; transition: 0.2s; font-weight: 500; border: 1px solid #d7bde2; margin-right: 5px; margin-bottom: 5px; }
+        .chip-filter:hover { background: #8e44ad; color: #fff; }
+
         #invoice-print-area, #riwayat-print-area { display: none; background: white; padding: 30px; font-family: Arial, sans-serif; color: black; }
         .invoice-kop { display: flex; align-items: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; }
         
@@ -93,14 +104,14 @@
     
     <div v-if="loading" class="loading-overlay">
         <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status"></div>
-        <div class="mt-2 fw-bold text-primary">Memproses Data...</div>
+        <div class="mt-2 fw-bold" style="color: #8e44ad;">Memproses Data...</div>
     </div>
     
     <div v-if="!isLoggedIn" class="d-flex align-items-center justify-content-center" style="height: 100vh;">
         <div class="card card-custom p-4 shadow-lg" style="width: 350px;">
             <div class="text-center mb-4">
-                <img src="https://lh3.googleusercontent.com/d/18e1v76BALeQYgi3J4cvN5KE94tdBcR4W" width="80" style="border-radius: 50%; margin-bottom: 10px;" onerror="this.src='https://via.placeholder.com/80/3498db/ffffff?text=BI'">
-                <h5 class="mt-3 fw-bold text-primary">Login Sistem</h5>
+                <img src="https://lh3.googleusercontent.com/d/18e1v76BALeQYgi3J4cvN5KE94tdBcR4W" width="80" style="border-radius: 50%; margin-bottom: 10px;" onerror="this.src='https://via.placeholder.com/80/8e44ad/ffffff?text=BI'">
+                <h5 class="mt-3 fw-bold" style="color: #4a235a;">Login Sistem</h5>
             </div>
             
             <div class="mb-3">
@@ -117,7 +128,7 @@
                 </button>
             </div>
             
-            <button @click="doLogin" class="btn btn-primary w-100 fw-bold shadow-sm" :disabled="loading">
+            <button @click="doLogin" class="btn w-100 fw-bold shadow-sm" style="background: #8e44ad; color: #fff;" :disabled="loading">
                 <span v-if="loading"><i class="fa-solid fa-circle-notch fa-spin me-2"></i> Memproses...</span>
                 <span v-else><i class="fa-solid fa-right-to-bracket me-2"></i> MASUK KE SISTEM</span>
             </button>
@@ -131,28 +142,31 @@
             <div class="sidebar-brand">
                 <h6 class="fw-bold m-0 text-white"><i class="fa-solid fa-building-columns me-2"></i>MIS BAITURRAHMAN GUBENG</h6>
             </div>
-            <div class="text-center py-2 bg-dark" style="font-size:11px; color:#bbb;">
+            <div class="text-center py-2 bg-dark bg-opacity-25" style="font-size:11px; color:#fdfefe;">
                 Login: <span class="fw-bold text-warning text-uppercase"><i class="fa-solid fa-user-shield me-1"></i> {{ session.role }}</span>
+                <div v-if="session.role === 'guru' && session.kelas" class="mt-1 text-info fw-bold"><i class="fa-solid fa-chalkboard-user"></i> {{ session.kelas }}</div>
             </div>
             
             <div class="menu-header">Dashboard</div>
             <a @click="go('dashboard')" :class="['nav-link', view === 'dashboard' ? 'active' : '']"><i class="fa-solid fa-chart-pie text-info"></i> Ringkasan Utama</a>
             
-            <template v-if="session.role === 'admin' || session.role === 'bendahara'">
+            <template v-if="session.role === 'admin' || session.role === 'bendahara' || session.role === 'guru'">
                 <div class="menu-header">Data Transaksi</div>
-                <a @click="go('pendapatan')" :class="['nav-link', view === 'pendapatan' ? 'active' : '']"><i class="fa-solid fa-coins text-success"></i> Pendapatan Lain</a>
-                <a @click="go('pembayaran_siswa')" :class="['nav-link', view === 'pembayaran_siswa' ? 'active' : '']"><i class="fa-solid fa-user-graduate text-success"></i> Riwayat Pembayaran</a>
+                <a v-if="session.role !== 'guru'" @click="go('pendapatan')" :class="['nav-link', view === 'pendapatan' ? 'active' : '']"><i class="fa-solid fa-coins text-success"></i> Pendapatan Lain</a>
+                <a v-if="session.role !== 'guru'" @click="go('pembayaran_siswa')" :class="['nav-link', view === 'pembayaran_siswa' ? 'active' : '']"><i class="fa-solid fa-user-graduate text-success"></i> Riwayat Pembayaran</a>
                 <a @click="go('tabungan')" :class="['nav-link', view === 'tabungan' ? 'active' : '']"><i class="fa-solid fa-piggy-bank text-info"></i> Data Tabungan Siswa</a>
-                <a @click="go('pengeluaran')" :class="['nav-link', view === 'pengeluaran' ? 'active' : '']"><i class="fa-solid fa-cart-shopping text-danger"></i> Pengeluaran Kas</a>
-                <a @click="go('utang_pegawai')" :class="['nav-link', view === 'utang_pegawai' ? 'active' : '']"><i class="fa-solid fa-file-invoice-dollar text-warning"></i> Utang Pegawai</a>
-                <div class="menu-header">Master Data</div>
+                <a v-if="session.role !== 'guru'" @click="go('pengeluaran')" :class="['nav-link', view === 'pengeluaran' ? 'active' : '']"><i class="fa-solid fa-cart-shopping text-danger"></i> Pengeluaran Kas</a>
+                <a v-if="session.role !== 'guru'" @click="go('utang_pegawai')" :class="['nav-link', view === 'utang_pegawai' ? 'active' : '']"><i class="fa-solid fa-file-invoice-dollar text-warning"></i> Utang Pegawai</a>
+                
+                <div class="menu-header" v-if="session.role !== 'guru'">Master Data</div>
                 <a v-if="session.role === 'admin'" @click="go('users')" :class="['nav-link', view === 'users' ? 'active' : '']"><i class="fa-solid fa-users-gear text-primary"></i> Data Pengguna</a>
-                <a @click="go('siswa')" :class="['nav-link', view === 'siswa' ? 'active' : '']"><i class="fa-solid fa-id-badge text-secondary"></i> Data Siswa</a>
-                <a @click="go('tagihan_siswa')" :class="['nav-link', view === 'tagihan_siswa' ? 'active' : '']"><i class="fa-solid fa-file-signature text-primary"></i> Data Tagihan Siswa</a>
-                <a @click="go('jenis_pendapatan')" :class="['nav-link', view === 'jenis_pendapatan' ? 'active' : '']"><i class="fa-solid fa-tags text-secondary"></i> Jenis Pendapatan</a>
-                <a @click="go('kategori_pengeluaran')" :class="['nav-link', view === 'kategori_pengeluaran' ? 'active' : '']"><i class="fa-solid fa-layer-group text-secondary"></i> Kat. Pengeluaran</a>
-                <div class="menu-header">Laporan Cetak</div>
-                <a @click="go('laporan_tunggakan')" :class="['nav-link', view === 'laporan_tunggakan' ? 'active' : '']"><i class="fa-solid fa-file-invoice-dollar text-white"></i> Laporan Tunggakan</a>
+                <a v-if="session.role !== 'guru'" @click="go('siswa')" :class="['nav-link', view === 'siswa' ? 'active' : '']"><i class="fa-solid fa-id-badge text-secondary"></i> Data Siswa</a>
+                <a v-if="session.role !== 'guru'" @click="go('tagihan_siswa')" :class="['nav-link', view === 'tagihan_siswa' ? 'active' : '']"><i class="fa-solid fa-file-signature text-primary"></i> Data Tagihan Siswa</a>
+                <a v-if="session.role !== 'guru'" @click="go('jenis_pendapatan')" :class="['nav-link', view === 'jenis_pendapatan' ? 'active' : '']"><i class="fa-solid fa-tags text-secondary"></i> Jenis Pendapatan</a>
+                <a v-if="session.role !== 'guru'" @click="go('kategori_pengeluaran')" :class="['nav-link', view === 'kategori_pengeluaran' ? 'active' : '']"><i class="fa-solid fa-layer-group text-secondary"></i> Kat. Pengeluaran</a>
+                
+                <div class="menu-header" v-if="session.role !== 'guru'">Laporan Cetak</div>
+                <a v-if="session.role !== 'guru'" @click="go('laporan_tunggakan')" :class="['nav-link', view === 'laporan_tunggakan' ? 'active' : '']"><i class="fa-solid fa-file-invoice-dollar text-white"></i> Laporan Tunggakan</a>
             </template>
             
             <template v-if="session.role === 'siswa'">
@@ -175,20 +189,20 @@
             <div class="main-container" :class="{'printing-invoice': printMode === 'invoice', 'printing-riwayat': printMode === 'riwayat', 'printing-tunggakan': printMode === 'tunggakan'}">
                 
                 <div v-show="view === 'dashboard'">
-                    <div class="row g-3 mb-4" v-if="session.role !== 'siswa'">
-                        <div class="col-md-2 col-6" style="width: 20%;">
+                    <div class="row g-3 mb-4" v-if="session.role !== 'siswa' && session.role !== 'guru'">
+                        <div class="col-md-2 col-6" style="width: 20%; min-width: 150px;">
                             <div class="dash-card bg-blue shadow"><i class="fa-solid fa-wallet"></i><h3>{{ formatRp(stats.summary.saldo) }}</h3><p>Saldo Kas Akhir</p></div>
                         </div>
-                        <div class="col-md-2 col-6" style="width: 20%;">
+                        <div class="col-md-2 col-6" style="width: 20%; min-width: 150px;">
                             <div class="dash-card bg-green shadow"><i class="fa-solid fa-hand-holding-dollar"></i><h3>{{ formatRp(stats.summary.pendapatan) }}</h3><p>Total Pemasukan</p></div>
                         </div>
-                        <div class="col-md-2 col-6" style="width: 20%;">
+                        <div class="col-md-2 col-6" style="width: 20%; min-width: 150px;">
                             <div class="dash-card bg-yellow shadow text-dark"><i class="fa-solid fa-file-invoice-dollar" style="opacity: 0.3;"></i><h3>{{ formatRp(stats.summary.tagihan) }}</h3><p>TOTAL TAGIHAN</p></div>
                         </div>
-                        <div class="col-md-2 col-6" style="width: 20%;">
+                        <div class="col-md-2 col-6" style="width: 20%; min-width: 150px;">
                             <div class="dash-card bg-orange shadow"><i class="fa-solid fa-cart-arrow-down"></i><h3>{{ formatRp(stats.summary.pengeluaran) }}</h3><p>Total Pengeluaran</p></div>
                         </div>
-                        <div class="col-md-2 col-6" style="width: 20%;">
+                        <div class="col-md-2 col-6" style="width: 20%; min-width: 150px;">
                             <div class="dash-card bg-red shadow"><i class="fa-solid fa-scale-balanced"></i><h3>{{ formatRp(stats.summary.labaRugi) }}</h3><p>Laba / Rugi Bersih</p></div>
                         </div>
                     </div>
@@ -203,17 +217,17 @@
                             <div class="dash-card bg-blue shadow"><i class="fa-solid fa-file-invoice-dollar"></i><h3>{{ formatRp(stats.summary.tagihan) }}</h3><p>TOTAL TAGIHAN</p></div>
                         </div>
                     </div>
-                    <div class="row g-3">
+                    <div class="row g-3" v-if="session.role !== 'guru'">
                         <div class="col-md-8">
                             <div class="card-custom p-4 h-100">
-                                <h6 class="fw-bold mb-3"><i class="fa-solid fa-clock-rotate-left text-primary me-2"></i> Histori Transaksi Terbaru</h6>
+                                <h6 class="fw-bold mb-3"><i class="fa-solid fa-clock-rotate-left me-2" style="color: #8e44ad;"></i> Histori Transaksi Terbaru</h6>
                                 <div class="table-responsive">
                                     <table class="table table-sm table-hover align-middle">
                                         <thead class="table-light"><tr><th>Nama</th><th>Keterangan</th><th>Nominal</th><th>Tanggal</th></tr></thead>
                                         <tbody>
                                             <tr v-for="(r, idx) in stats.recentPendapatan" :key="idx">
                                                 <td><i class="fa-regular fa-user text-muted me-2"></i>{{ r[1] }}</td>
-                                                <td style="white-space: pre-wrap;"><span class="badge bg-primary bg-opacity-10 text-primary border border-primary">{{ r[2] === 'Siswa' ? r[4] : r[2] }}</span></td>
+                                                <td style="white-space: pre-wrap;"><span class="badge bg-opacity-10 text-primary border border-primary" style="background-color: #ebdef0; color: #5b2c6f !important;">{{ r[2] === 'Siswa' ? r[4] : r[2] }}</span></td>
                                                 <td class="fw-bold text-success">{{ formatRp(r[5] || r[4]) }}</td>
                                                 <td><i class="fa-regular fa-calendar-days text-muted me-1"></i>{{ r[6] || r[5] }}</td>
                                             </tr>
@@ -225,10 +239,16 @@
                         </div>
                         <div class="col-md-4">
                             <div class="card-custom p-4 h-100 text-center">
-                                <h6 class="fw-bold mb-3"><i class="fa-solid fa-chart-pie text-primary me-2"></i>{{ session.role === 'siswa' ? 'Grafik Tagihan & Pembayaran' : 'Grafik Pendapatan' }}</h6>
+                                <h6 class="fw-bold mb-3"><i class="fa-solid fa-chart-pie me-2" style="color: #8e44ad;"></i>{{ session.role === 'siswa' ? 'Grafik Tagihan & Pembayaran' : 'Grafik Pendapatan' }}</h6>
                                 <canvas id="chartIncome" style="max-height: 220px; width:100%;"></canvas>
                             </div>
                         </div>
+                    </div>
+                    <div class="card-custom p-4 text-center mt-3" v-if="session.role === 'guru'">
+                        <h4 class="fw-bold text-primary mb-3">Selamat Datang, {{ session.nama }}</h4>
+                        <p>Anda bertugas sebagai Wali Kelas / Guru untuk kelas: <strong class="text-info">{{ session.kelas || 'Belum Diatur' }}</strong></p>
+                        <p class="text-muted">Gunakan menu di samping untuk menginput dan memantau tabungan siswa khusus untuk kelas Anda.</p>
+                        <button class="btn btn-primary mt-2" @click="go('tabungan')">Buka Data Tabungan Kelas</button>
                     </div>
                 </div>
                 
@@ -236,7 +256,7 @@
                     <div class="card-custom p-4">
                         <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 border-bottom pb-3">
                             <h5 class="fw-bold m-0 mb-3 mb-md-0"><i class="fa-solid fa-cash-register text-success me-2"></i> Riwayat Pembayaran Siswa</h5>
-                            <div class="d-flex gap-2">
+                            <div class="d-flex gap-2 flex-wrap">
                                 <input type="text" class="form-control form-control-sm" placeholder="Cari Nama Siswa..." v-model="searchHistory">
                                 <button v-if="session.role !== 'siswa'" @click="bukaModalBayar" class="btn btn-success btn-sm shadow-sm" style="white-space: nowrap;"><i class="fa-solid fa-circle-plus me-1"></i> Input Bayar</button>
                             </div>
@@ -246,10 +266,10 @@
                                 <thead class="table-light"><tr><th style="width: 50px;"></th><th>Nama Siswa</th><th>Total Nominal Dibayar</th><th class="text-center" style="width: 140px;">Aksi / Cetak</th></tr></thead>
                                 <tbody v-for="(group, gIdx) in filteredGroupedHistory" :key="group.nama">
                                     <tr class="row-parent" @click="toggleHistory(group.nama)">
-                                        <td class="text-center text-primary"><i :class="expandedHistory === group.nama ? 'fa-solid fa-chevron-down' : 'fa-solid fa-chevron-right'"></i></td>
+                                        <td class="text-center" style="color: #8e44ad;"><i :class="expandedHistory === group.nama ? 'fa-solid fa-chevron-down' : 'fa-solid fa-chevron-right'"></i></td>
                                         <td class="fw-bold">{{ group.nama }}</td>
                                         <td class="fw-bold text-success">{{ formatRp(group.totalBayar) }}</td>
-                                        <td class="text-center"><button class="btn btn-sm btn-outline-primary py-0 px-2 shadow-sm" @click.stop="doPrintRiwayat(group)"><i class="fa-solid fa-print me-1"></i> Cetak Riwayat</button></td>
+                                        <td class="text-center"><button class="btn btn-sm btn-outline-primary py-0 px-2 shadow-sm" style="border-color: #8e44ad; color: #8e44ad;" @click.stop="doPrintRiwayat(group)"><i class="fa-solid fa-print me-1"></i> Cetak Riwayat</button></td>
                                     </tr>
                                     <tr v-if="expandedHistory === group.nama">
                                         <td colspan="4" class="p-0">
@@ -263,7 +283,7 @@
                                                             <td class="text-success fw-bold">{{ formatRp(row[5]) }}</td>
                                                             <td>{{ row[6] }}</td>
                                                             <td v-if="session.role !== 'siswa'" class="text-center" style="white-space: nowrap;">
-                                                                <button v-if="session.role === 'admin'" @click="openModal('edit', row)" class="btn btn-primary btn-action shadow-sm text-white" title="Edit Transaksi"><i class="fa-solid fa-pen-to-square"></i></button>
+                                                                <button v-if="session.role === 'admin'" @click="openModal('edit', row)" class="btn btn-primary btn-action shadow-sm text-white" style="background:#8e44ad; border:none;" title="Edit Transaksi"><i class="fa-solid fa-pen-to-square"></i></button>
                                                                 <button @click="doPrintInvoice(row)" class="btn btn-info btn-action shadow-sm text-white ms-1" title="Cetak Invoice Ini"><i class="fa-solid fa-print"></i></button>
                                                                 <button v-if="session.role === 'admin'" @click="deleteData(row[0], 'pendapatan')" class="btn btn-danger btn-action shadow-sm text-white ms-1" title="Hapus"><i class="fa-solid fa-trash-can"></i></button>
                                                             </td>
@@ -286,9 +306,9 @@
                     <div class="card-custom p-4">
                         <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 border-bottom pb-3">
                             <h5 class="fw-bold m-0 mb-3 mb-md-0"><i class="fa-solid fa-file-signature text-primary me-2"></i> Data Tagihan Siswa</h5>
-                            <div class="d-flex gap-2">
+                            <div class="d-flex gap-2 flex-wrap">
                                 <input type="text" class="form-control form-control-sm" placeholder="Cari Siswa..." v-model="searchTagihan">
-                                <button v-if="session.role !== 'siswa'" @click="bukaModalBuatTagihan" class="btn btn-primary btn-sm shadow-sm" style="white-space: nowrap;"><i class="fa-solid fa-wand-magic-sparkles me-1"></i> Generate</button>
+                                <button v-if="session.role !== 'siswa'" @click="bukaModalBuatTagihan" class="btn btn-primary btn-sm shadow-sm" style="white-space: nowrap; background: #8e44ad; border:none;"><i class="fa-solid fa-wand-magic-sparkles me-1"></i> Generate</button>
                             </div>
                         </div>
                         <div class="table-responsive">
@@ -296,12 +316,12 @@
                                 <thead class="table-light"><tr><th style="width: 50px;"></th><th>Nama Siswa</th><th>Total Tagihan</th><th>Total Kekurangan</th><th class="text-center" style="width: 150px;">Aksi</th></tr></thead>
                                 <tbody v-for="g in filteredGroupedTagihan" :key="g.nama">
                                     <tr class="row-parent" @click="toggleTagihan(g.nama)">
-                                        <td class="text-center text-primary"><i :class="expandedTagihan === g.nama ? 'fa-solid fa-chevron-down' : 'fa-solid fa-chevron-right'"></i></td>
+                                        <td class="text-center" style="color:#8e44ad;"><i :class="expandedTagihan === g.nama ? 'fa-solid fa-chevron-down' : 'fa-solid fa-chevron-right'"></i></td>
                                         <td class="fw-bold">{{ g.nama }}</td>
                                         <td class="text-muted">{{ formatRp(g.totalTagihan) }}</td>
                                         <td class="fw-bold text-danger">{{ formatRp(g.totalKurang) }}</td>
                                         <td class="text-center">
-                                            <button class="btn btn-sm btn-outline-primary py-0 px-2 shadow-sm">Rincian</button>
+                                            <button class="btn btn-sm btn-outline-primary py-0 px-2 shadow-sm" style="border-color:#8e44ad; color:#8e44ad;">Rincian</button>
                                             <button v-if="session.role !== 'siswa'" class="btn btn-sm btn-success py-0 px-2 ms-1 shadow-sm" @click.stop="kirimInfoTagihanWA(g)"><i class="fa-brands fa-whatsapp"></i> WA</button>
                                         </td>
                                     </tr>
@@ -317,7 +337,7 @@
                                                             <td class="text-success">{{ formatRp(row[5]) }}</td>
                                                             <td class="text-danger fw-bold">{{ formatRp(row[6]) }}</td>
                                                             <td v-if="session.role === 'admin'" class="text-center" style="white-space: nowrap;">
-                                                                <button @click="openModal('edit', row)" class="btn btn-primary btn-action shadow-sm text-white"><i class="fa-solid fa-pen-to-square"></i></button>
+                                                                <button @click="openModal('edit', row)" class="btn btn-primary btn-action shadow-sm text-white" style="background:#8e44ad; border:none;"><i class="fa-solid fa-pen-to-square"></i></button>
                                                                 <button @click="deleteData(row[0], view)" class="btn btn-danger btn-action shadow-sm text-white ms-1"><i class="fa-solid fa-trash-can"></i></button>
                                                             </td>
                                                         </tr>
@@ -338,27 +358,35 @@
                 <div v-show="view === 'tabungan'">
                     <div class="card-custom p-4">
                         <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 border-bottom pb-3">
-                            <h5 class="fw-bold m-0 mb-3 mb-md-0"><i class="fa-solid fa-piggy-bank text-info me-2"></i> Data Tabungan Siswa</h5>
-                            <div class="d-flex gap-2">
+                            <h5 class="fw-bold m-0 mb-3 mb-md-0"><i class="fa-solid fa-piggy-bank text-info me-2"></i> Data Tabungan Siswa <span v-if="session.role==='guru'" class="text-muted fs-6 d-block mt-1">(Kelas: {{ session.kelas || 'Semua' }})</span></h5>
+                            <div class="d-flex gap-2 flex-wrap">
                                 <input type="text" class="form-control form-control-sm" placeholder="Cari Nama/Kelas..." v-model="searchTabungan">
-                                <button v-if="session.role !== 'siswa'" @click="openModal('add')" class="btn btn-primary btn-sm shadow-sm" style="white-space: nowrap;"><i class="fa-solid fa-circle-plus me-1"></i> Tambah Data</button>
+                                <button v-if="session.role !== 'siswa'" @click="openModal('add')" class="btn btn-primary btn-sm shadow-sm" style="white-space: nowrap; background: #8e44ad; border:none;"><i class="fa-solid fa-circle-plus me-1"></i> Tambah Data</button>
                                 <button @click="exportExcel" class="btn btn-success btn-sm shadow-sm"><i class="fa-solid fa-file-excel me-1"></i> Export XLSX</button>
                             </div>
                         </div>
+                        
+                        <!-- Filter Rekomendasi Kelas Cepat -->
+                        <div class="mb-3" v-if="session.role !== 'siswa' && session.role !== 'guru' && listKelas.length > 0">
+                            <span class="text-muted fw-bold small me-2"><i class="fa-solid fa-filter"></i> Rekomendasi Filter:</span>
+                            <span class="chip-filter" @click="searchTabungan=''">Semua Kelas</span>
+                            <span v-for="k in listKelas" :key="k" class="chip-filter" @click="searchTabungan=k">{{ k }}</span>
+                        </div>
+
                         <div class="table-responsive">
                             <table class="table table-hover align-middle">
-                                <thead class="table-light"><tr><th style="width: 50px;"></th><th>Nama Siswa</th><th>Kelas</th><th>Saldo Akhir</th><th v-if="session.role === 'admin' || session.role === 'bendahara'" class="text-center" style="width: 100px;">Aksi</th></tr></thead>
+                                <thead class="table-light"><tr><th style="width: 50px;"></th><th>Nama Siswa</th><th>Kelas</th><th>Saldo Akhir</th><th v-if="session.role === 'admin' || session.role === 'bendahara' || session.role === 'guru'" class="text-center" style="width: 100px;">Aksi</th></tr></thead>
                                 <tbody v-for="g in groupedTabungan" :key="g.nama">
                                     <tr class="row-parent" @click="toggleTabungan(g.nama)">
-                                        <td class="text-center text-primary"><i :class="expandedTabungan === g.nama ? 'fa-solid fa-chevron-down' : 'fa-solid fa-chevron-right'"></i></td>
+                                        <td class="text-center" style="color:#8e44ad;"><i :class="expandedTabungan === g.nama ? 'fa-solid fa-chevron-down' : 'fa-solid fa-chevron-right'"></i></td>
                                         <td class="fw-bold">{{ g.nama }}</td>
                                         <td>{{ g.kelas }}</td>
                                         <td class="fw-bold" :class="g.currentSaldo >= 0 ? 'text-success' : 'text-danger'">{{ formatRp(g.currentSaldo) }}</td>
-                                        <td v-if="session.role === 'admin' || session.role === 'bendahara'" class="text-center"><button class="btn btn-sm btn-outline-primary py-0 px-2" @click.stop="openModalAddTabungan(g.nama)">+ Mutasi</button></td>
+                                        <td v-if="session.role === 'admin' || session.role === 'bendahara' || session.role === 'guru'" class="text-center"><button class="btn btn-sm btn-outline-primary py-0 px-2" style="border-color:#8e44ad; color:#8e44ad;" @click.stop="openModalAddTabungan(g.nama)">+ Mutasi</button></td>
                                     </tr>
                                     <tr v-if="expandedTabungan === g.nama">
                                         <td colspan="5" class="p-0">
-                                            <div class="row-child-container" style="border-left-color: #3498db;">
+                                            <div class="row-child-container">
                                                 <table class="table table-sm table-bordered bg-white mb-0">
                                                     <thead class="bg-light"><tr><th>Tanggal</th><th>Mutasi</th><th>Sisa Saldo</th><th>Keterangan</th><th v-if="session.role === 'admin' || session.role === 'bendahara'" class="text-center">Aksi</th></tr></thead>
                                                     <tbody>
@@ -370,7 +398,7 @@
                                                             <td class="fw-bold">{{ formatRp(idxTabungan.saldo !== -1 ? row[idxTabungan.saldo] : row._virtualSaldo) }}</td>
                                                             <td style="white-space: pre-wrap;">{{ row[idxTabungan.ket !== -1 ? idxTabungan.ket : 4] }}</td>
                                                             <td v-if="session.role === 'admin' || session.role === 'bendahara'" class="text-center" style="white-space: nowrap;">
-                                                                <button @click="openModal('edit', row)" class="btn btn-primary btn-action shadow-sm text-white"><i class="fa-solid fa-pen-to-square"></i></button>
+                                                                <button @click="openModal('edit', row)" class="btn btn-primary btn-action shadow-sm text-white" style="background:#8e44ad; border:none;"><i class="fa-solid fa-pen-to-square"></i></button>
                                                                 <button @click="deleteData(row[0], view)" class="btn btn-danger btn-action shadow-sm text-white ms-1"><i class="fa-solid fa-trash-can"></i></button>
                                                             </td>
                                                         </tr>
@@ -392,8 +420,8 @@
                     <div class="card-custom p-4">
                         <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
                             <h5 class="fw-bold text-capitalize m-0 mb-3 mb-md-0"><i class="fa-solid fa-table text-primary me-2"></i> Data {{ view.replace('_', ' ') }}</h5>
-                            <div class="d-flex gap-2">
-                                <button v-if="session.role !== 'siswa'" @click="openModal('add')" class="btn btn-primary btn-sm shadow-sm"><i class="fa-solid fa-circle-plus me-1"></i> Tambah Data</button>
+                            <div class="d-flex gap-2 flex-wrap">
+                                <button v-if="session.role !== 'siswa' && session.role !== 'guru'" @click="openModal('add')" class="btn btn-primary btn-sm shadow-sm" style="background: #8e44ad; border:none;"><i class="fa-solid fa-circle-plus me-1"></i> Tambah Data</button>
                                 <button @click="exportExcel" class="btn btn-success btn-sm shadow-sm"><i class="fa-solid fa-file-excel me-1"></i> Export XLSX</button>
                             </div>
                         </div>
@@ -413,7 +441,7 @@
                                             <span v-else>{{ cell }}</span>
                                         </td>
                                         <td v-if="session.role === 'admin'" class="text-center" style="white-space: nowrap;">
-                                            <button @click="openModal('edit', row)" class="btn btn-primary btn-action shadow-sm text-white" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
+                                            <button @click="openModal('edit', row)" class="btn btn-primary btn-action shadow-sm text-white" style="background:#8e44ad; border:none;" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
                                             <button @click="deleteData(row[0], view)" class="btn btn-danger btn-action shadow-sm text-white ms-1" title="Hapus"><i class="fa-solid fa-trash-can"></i></button>
                                         </td>
                                     </tr>
@@ -607,7 +635,7 @@
         <div v-if="modalBuatTagihan.show" class="modal-custom" style="z-index: 1065;">
             <div class="modal-body-custom shadow-lg sm">
                 <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
-                    <h5 class="m-0 fw-bold text-primary"><i class="fa-solid fa-wand-magic-sparkles me-2"></i> Generate Tagihan</h5>
+                    <h5 class="m-0 fw-bold text-primary" style="color: #8e44ad !important;"><i class="fa-solid fa-wand-magic-sparkles me-2"></i> Generate Tagihan</h5>
                     <i class="fa-solid fa-xmark cursor-pointer fs-5 text-secondary" @click="modalBuatTagihan.show = false"></i>
                 </div>
                 <div class="mb-3">
@@ -626,7 +654,7 @@
                     <label class="form-label fw-bold">Pilih Siswa</label>
                     <div class="input-group">
                         <input type="text" class="form-control" v-model="searchSiswaInput" @input="formBuatTagihan.siswa = null" @keyup.enter="bukaModalPilihSiswa('tagihan')" placeholder="Ketik Nama/NIS Siswa...">
-                        <button class="btn btn-primary" @click="bukaModalPilihSiswa('tagihan')"><i class="fa-solid fa-magnifying-glass me-1"></i> Cari</button>
+                        <button class="btn btn-primary" style="background:#8e44ad; border:none;" @click="bukaModalPilihSiswa('tagihan')"><i class="fa-solid fa-magnifying-glass me-1"></i> Cari</button>
                     </div>
                 </div>
                 <div class="mb-3">
@@ -642,7 +670,7 @@
                 </div>
                 <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
                     <button @click="modalBuatTagihan.show = false" class="btn btn-light shadow-sm"><i class="fa-solid fa-xmark me-1"></i> Batal</button>
-                    <button @click="submitBuatTagihan" class="btn btn-primary shadow-sm px-4" :disabled="loading"><i class="fa-solid fa-circle-check me-1"></i> Generate</button>
+                    <button @click="submitBuatTagihan" class="btn btn-primary shadow-sm px-4" style="background:#8e44ad; border:none;" :disabled="loading"><i class="fa-solid fa-circle-check me-1"></i> Generate</button>
                 </div>
             </div>
         </div>
@@ -658,7 +686,7 @@
                     <div class="col-sm-9">
                         <div class="input-group">
                             <input type="text" class="form-control" v-model="searchSiswaInput" @input="formBayar.siswa = null" @keyup.enter="bukaModalPilihSiswa('bayar')" placeholder="Ketik Nama/NIS Siswa...">
-                            <button @click="bukaModalPilihSiswa('bayar')" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass me-1"></i> Cari</button>
+                            <button @click="bukaModalPilihSiswa('bayar')" class="btn btn-primary" style="background:#8e44ad; border:none;"><i class="fa-solid fa-magnifying-glass me-1"></i> Cari</button>
                         </div>
                     </div>
                 </div>
@@ -734,7 +762,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <button type="button" class="btn btn-outline-primary btn-sm mt-2 w-100 fw-bold" @click="setFullTunai">
+                            <button type="button" class="btn btn-outline-primary btn-sm mt-2 w-100 fw-bold" style="border-color:#8e44ad; color:#8e44ad;" @click="setFullTunai">
                                 <i class="fa-solid fa-money-bill-wave me-1"></i> Isi Otomatis Set Full Tunai
                             </button>
                         </div>
@@ -770,10 +798,18 @@
         <div v-if="modalSiswa.show" class="modal-custom" style="z-index: 1070;">
             <div class="modal-body-custom shadow-lg">
                 <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
-                    <h6 class="m-0 fw-bold text-primary"><i class="fa-solid fa-users me-2"></i> Pilih Data Siswa</h6><button @click="modalSiswa.show = false" class="btn-close"></button>
+                    <h6 class="m-0 fw-bold text-primary" style="color:#8e44ad !important;"><i class="fa-solid fa-users me-2"></i> Pilih Data Siswa</h6><button @click="modalSiswa.show = false" class="btn-close"></button>
                 </div>
+                
+                <!-- Filter Rekomendasi Kelas Cepat di Pencarian Siswa -->
+                <div class="mb-2" v-if="session.role !== 'guru' && listKelas.length > 0">
+                    <span class="text-muted fw-bold small me-2"><i class="fa-solid fa-filter"></i> Filter Kelas:</span>
+                    <span class="chip-filter" @click="searchSiswaInput=''">Semua</span>
+                    <span v-for="k in listKelas" :key="k" class="chip-filter" @click="searchSiswaInput=k">{{ k }}</span>
+                </div>
+
                 <div class="mb-2">
-                    <input type="text" class="form-control form-control-sm" v-model="searchSiswaInput" placeholder="Filter Nama/NIS di sini...">
+                    <input type="text" class="form-control form-control-sm" v-model="searchSiswaInput" placeholder="Ketik filter Nama/NIS/Kelas di sini...">
                 </div>
                 <div class="table-responsive" style="max-height: 300px;">
                     <table class="table table-hover table-sm align-middle">
@@ -794,7 +830,7 @@
         
         <div v-if="modalTagihan.show" class="modal-custom" style="z-index: 1070;">
             <div class="modal-body-custom shadow-lg">
-                <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3 bg-primary text-white p-3 rounded">
+                <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3 text-white p-3 rounded" style="background:#8e44ad;">
                     <h6 class="m-0 fw-bold"><i class="fa-solid fa-file-invoice-dollar me-2"></i> Tagihan Aktif: {{ formBayar.siswa.nama }}</h6>
                     <i class="fa-solid fa-xmark cursor-pointer fs-5" @click="modalTagihan.show = false"></i>
                 </div>
@@ -816,7 +852,7 @@
         <div v-if="modal.show" class="modal-custom">
             <div class="modal-body-custom sm shadow-lg">
                 <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
-                    <h5 class="fw-bold text-capitalize m-0 text-primary"><i :class="modal.action === 'add' ? 'fa-solid fa-circle-plus' : 'fa-solid fa-pen-to-square'"></i> {{ modal.action === 'add' ? 'Tambah' : 'Edit' }} Data</h5>
+                    <h5 class="fw-bold text-capitalize m-0 text-primary" style="color:#8e44ad !important;"><i :class="modal.action === 'add' ? 'fa-solid fa-circle-plus' : 'fa-solid fa-pen-to-square'"></i> {{ modal.action === 'add' ? 'Tambah' : 'Edit' }} Data</h5>
                     <i class="fa-solid fa-xmark fs-4 text-secondary cursor-pointer" @click="modal.show = false"></i>
                 </div>
                 <div class="row g-3">
@@ -856,7 +892,7 @@
                 </div>
                 <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
                     <button @click="modal.show = false" class="btn btn-light shadow-sm"><i class="fa-solid fa-xmark me-1"></i> Batal</button>
-                    <button @click="saveData" class="btn btn-primary shadow-sm px-4"><i class="fa-solid fa-floppy-disk me-1"></i> Simpan Data</button>
+                    <button @click="saveData" class="btn btn-primary shadow-sm px-4" style="background:#8e44ad; border:none;"><i class="fa-solid fa-floppy-disk me-1"></i> Simpan Data</button>
                 </div>
             </div>
         </div>
@@ -866,7 +902,6 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyiCnQM5iIbzBajSYktY
 let myChart = null;
 const getToday = () => { const d = new Date(); return d.toISOString().split('T')[0]; };
 const { createApp } = Vue;
-
 createApp({
     data() {
         return {
@@ -901,9 +936,14 @@ createApp({
                    Number(this.formBayar.metodeBayar.tabungan || 0);
         },
         filteredListSiswa() {
-            if (!this.searchSiswaInput) return this.listSiswa;
+            let arr = this.listSiswa;
+            // Khusus guru hanya tampilkan siswa di kelasnya
+            if (this.session.role === 'guru' && this.session.kelas) {
+                arr = arr.filter(x => x.kelas.toLowerCase() === this.session.kelas.toLowerCase());
+            }
+            if (!this.searchSiswaInput) return arr;
             let s = this.searchSiswaInput.toLowerCase();
-            return this.listSiswa.filter(x => x.nama.toLowerCase().includes(s) || x.nis.toString().toLowerCase().includes(s));
+            return arr.filter(x => x.nama.toLowerCase().includes(s) || x.nis.toString().toLowerCase().includes(s) || x.kelas.toLowerCase().includes(s));
         },
         filteredGroupedHistory() {
             let groups = {};
@@ -954,29 +994,29 @@ createApp({
             let iTgl = this.idxTabungan.tgl !== -1 ? this.idxTabungan.tgl : 1;
             let iNominal = this.idxTabungan.nominal !== -1 ? this.idxTabungan.nominal : 3;
             let iSaldo = this.idxTabungan.saldo;
-
             this.tableData.body.forEach(row => {
-                let nama = row[2]; // Index 2 default nama siswa
+                let nama = row[2];
                 if (!groups[nama]) {
                     let s = this.listSiswa.find(x => x.nama === nama);
                     let kelas = s ? s.kelas : '-';
                     groups[nama] = { nama: nama, kelas: kelas, currentSaldo: 0, details: [] };
                 }
-                groups[nama].details.push([...row]); // Hindari mutasi langsung pada array state
+                groups[nama].details.push([...row]);
             });
             
             let arr = Object.values(groups);
+            
+            // Filter otomatis khusus role guru
+            if (this.session.role === 'guru' && this.session.kelas) {
+                arr = arr.filter(g => g.kelas.toLowerCase() === this.session.kelas.toLowerCase());
+            }
+
             arr.forEach(g => {
                 let saldoSum = 0;
                 g.details.forEach(row => {
                     let mutasi = Number(row[iNominal]) || 0;
                     saldoSum += mutasi;
-                    
-                    if (iSaldo !== -1) {
-                        row[iSaldo] = saldoSum;
-                    } else {
-                        row._virtualSaldo = saldoSum; // Simpan secara virtual jika sheet tak punya kolom saldo
-                    }
+                    if (iSaldo !== -1) { row[iSaldo] = saldoSum; } else { row._virtualSaldo = saldoSum; }
                 });
                 g.currentSaldo = saldoSum;
             });
@@ -1250,7 +1290,7 @@ createApp({
             try {
                 const res = await this.apiCall('getDaftarSiswa');
                 this.loading = false; this.listSiswa = res; this.modalSiswa.show = true;
-                if(context === 'tagihan' && this.listKelas.length === 0) this.fetchDaftarKelas();
+                if((context === 'tagihan' || context === 'bayar') && this.listKelas.length === 0) this.fetchDaftarKelas();
             } catch(err) { this.loading = false; }
         },
         pilihSiswa(s) {
@@ -1339,16 +1379,12 @@ createApp({
                 if(res.success) {
                     this.tableData = { header: res.header, body: res.body };
                     
-                    if(targetModule === 'tagihan_siswa') {
+                    if(targetModule === 'tagihan_siswa' || targetModule === 'tabungan') {
                         if(this.listKelas.length === 0) this.fetchDaftarKelas();
                         if(this.listSiswa.length === 0) {
                             const resSiswa = await this.apiCall('getDaftarSiswa');
                             this.listSiswa = resSiswa;
                         }
-                    }
-                    if(targetModule === 'tabungan' && this.listSiswa.length === 0) {
-                        const resSiswa = await this.apiCall('getDaftarSiswa');
-                        this.listSiswa = resSiswa;
                     }
                 } else this.tableData = { header: [], body: [] };
             } catch(err) { this.loading = false; this.tableData = { header: [], body: [] }; }
@@ -1360,7 +1396,7 @@ createApp({
                 this.loading = false;
                 if(res.success) {
                     this.stats = res;
-                    this.$nextTick(() => { if(this.view === 'dashboard') this.renderChart(); });
+                    this.$nextTick(() => { if(this.view === 'dashboard' && this.session.role !== 'guru') this.renderChart(); });
                 }
             } catch(err) { this.loading = false; }
         },
@@ -1368,7 +1404,7 @@ createApp({
             if (myChart) myChart.destroy();
             const ctx = document.getElementById('chartIncome');
             if(ctx && this.stats.chartPendapatan.labels.length > 0) {
-                let chartColors = ['#3498db', '#2ecc71', '#f1c40f', '#e74c3c', '#9b59b6'];
+                let chartColors = ['#8e44ad', '#2ecc71', '#f1c40f', '#e74c3c', '#9b59b6'];
                 if(this.session.role === 'siswa') chartColors = ['#e74c3c', '#2ecc71'];
                 myChart = new Chart(ctx, {
                     type: 'doughnut',

@@ -16,11 +16,10 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
     <style>
-        /* TEMA BARU: Ungu & Peach */
         :root { 
-            --sidebar-bg: #4a235a; /* Ungu gelap */
-            --header-bg: linear-gradient(90deg, #8e44ad, #d2b4de); /* Gradasi ungu */
-            --bg-light: linear-gradient(135deg, #fdebd0 0%, #f4ecf7 100%); /* Peach ke Ungu muda */
+            --sidebar-bg: #4a235a;
+            --header-bg: linear-gradient(90deg, #8e44ad, #d2b4de);
+            --bg-light: linear-gradient(135deg, #fdebd0 0%, #f4ecf7 100%);
         }
         body { font-family: 'Poppins', sans-serif; background: var(--bg-light); background-attachment: fixed; font-size: 13px; color: #333; overflow-x: hidden; margin:0; padding:0; }
         
@@ -30,15 +29,15 @@
         .menu-header { font-size: 10px; text-transform: uppercase; color: #d7bde2; padding: 15px 20px 5px; font-weight: bold; }
         .nav-link { color: #ebdef0; padding: 10px 20px; display: block; text-decoration: none; transition: 0.2s; cursor: pointer; }
         .nav-link i { width: 25px; text-align: center; font-size: 14px;}
-        .nav-link:hover, .nav-link.active { background: #5b2c6f; color: #fff; border-left: 3px solid #ffdab9; } /* Aksen Peach */
+        .nav-link:hover, .nav-link.active { background: #5b2c6f; color: #fff; border-left: 3px solid #ffdab9; }
         .sidebar-overlay { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5); z-index: 1040; }
         
         @media (max-width: 768px) {
             #sidebar { position: fixed; height: 100vh; transform: translateX(-100%); }
             #sidebar.open { transform: translateX(0); }
             .sidebar-overlay.show { display: block; }
-            .dash-card { margin-bottom: 15px; } /* Jarak antar card di mobile */
-            .btn-action { margin-bottom: 5px; } /* Jarak tombol aksi di mobile */
+            .dash-card { margin-bottom: 15px; }
+            .btn-action { margin-bottom: 5px; }
         }
         
         #content { flex: 1; display: flex; flex-direction: column; overflow-y: auto; width: 100%; }
@@ -66,10 +65,9 @@
         .btn-action:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
         
         .row-parent { cursor: pointer; transition: background 0.2s; }
-        .row-parent:hover { background-color: #f5eef8 !important; } /* Aksen hover ungu muda */
+        .row-parent:hover { background-color: #f5eef8 !important; }
         .row-child-container { background-color: #fafbfc; padding: 15px; border-left: 4px solid #8e44ad; }
         
-        /* Chip filter pencarian */
         .chip-filter { display: inline-block; padding: 4px 12px; border-radius: 15px; background: #ebdef0; color: #5b2c6f; font-size: 11px; cursor: pointer; transition: 0.2s; font-weight: 500; border: 1px solid #d7bde2; margin-right: 5px; margin-bottom: 5px; }
         .chip-filter:hover { background: #8e44ad; color: #fff; }
 
@@ -189,7 +187,11 @@
             <div class="main-container" :class="{'printing-invoice': printMode === 'invoice', 'printing-riwayat': printMode === 'riwayat', 'printing-tunggakan': printMode === 'tunggakan'}">
                 
                 <div v-show="view === 'dashboard'">
-                    <div class="row g-3 mb-4" v-if="session.role !== 'siswa' && session.role !== 'guru'">
+                    <div class="alert alert-info py-2 mb-3 shadow-sm border-0" v-if="session.role === 'guru'" style="background-color: #ebdef0; color: #5b2c6f;">
+                        <i class="fa-solid fa-chalkboard-user me-2"></i> Dashboard difilter khusus untuk rekapan siswa kelas: <strong>{{ session.kelas }}</strong>
+                    </div>
+
+                    <div class="row g-3 mb-4" v-if="session.role !== 'siswa'">
                         <div class="col-md-2 col-6" style="width: 20%; min-width: 150px;">
                             <div class="dash-card bg-blue shadow"><i class="fa-solid fa-wallet"></i><h3>{{ formatRp(stats.summary.saldo) }}</h3><p>Saldo Kas Akhir</p></div>
                         </div>
@@ -217,7 +219,7 @@
                             <div class="dash-card bg-blue shadow"><i class="fa-solid fa-file-invoice-dollar"></i><h3>{{ formatRp(stats.summary.tagihan) }}</h3><p>TOTAL TAGIHAN</p></div>
                         </div>
                     </div>
-                    <div class="row g-3" v-if="session.role !== 'guru'">
+                    <div class="row g-3" v-if="session.role !== 'siswa'">
                         <div class="col-md-8">
                             <div class="card-custom p-4 h-100">
                                 <h6 class="fw-bold mb-3"><i class="fa-solid fa-clock-rotate-left me-2" style="color: #8e44ad;"></i> Histori Transaksi Terbaru</h6>
@@ -239,16 +241,10 @@
                         </div>
                         <div class="col-md-4">
                             <div class="card-custom p-4 h-100 text-center">
-                                <h6 class="fw-bold mb-3"><i class="fa-solid fa-chart-pie me-2" style="color: #8e44ad;"></i>{{ session.role === 'siswa' ? 'Grafik Tagihan & Pembayaran' : 'Grafik Pendapatan' }}</h6>
+                                <h6 class="fw-bold mb-3"><i class="fa-solid fa-chart-pie me-2" style="color: #8e44ad;"></i>Grafik Pendapatan</h6>
                                 <canvas id="chartIncome" style="max-height: 220px; width:100%;"></canvas>
                             </div>
                         </div>
-                    </div>
-                    <div class="card-custom p-4 text-center mt-3" v-if="session.role === 'guru'">
-                        <h4 class="fw-bold text-primary mb-3">Selamat Datang, {{ session.nama }}</h4>
-                        <p>Anda bertugas sebagai Wali Kelas / Guru untuk kelas: <strong class="text-info">{{ session.kelas || 'Belum Diatur' }}</strong></p>
-                        <p class="text-muted">Gunakan menu di samping untuk menginput dan memantau tabungan siswa khusus untuk kelas Anda.</p>
-                        <button class="btn btn-primary mt-2" @click="go('tabungan')">Buka Data Tabungan Kelas</button>
                     </div>
                 </div>
                 
@@ -366,7 +362,6 @@
                             </div>
                         </div>
                         
-                        <!-- Filter Rekomendasi Kelas Cepat -->
                         <div class="mb-3" v-if="session.role !== 'siswa' && session.role !== 'guru' && listKelas.length > 0">
                             <span class="text-muted fw-bold small me-2"><i class="fa-solid fa-filter"></i> Rekomendasi Filter:</span>
                             <span class="chip-filter" @click="searchTabungan=''">Semua Kelas</span>
@@ -801,7 +796,6 @@
                     <h6 class="m-0 fw-bold text-primary" style="color:#8e44ad !important;"><i class="fa-solid fa-users me-2"></i> Pilih Data Siswa</h6><button @click="modalSiswa.show = false" class="btn-close"></button>
                 </div>
                 
-                <!-- Filter Rekomendasi Kelas Cepat di Pencarian Siswa -->
                 <div class="mb-2" v-if="session.role !== 'guru' && listKelas.length > 0">
                     <span class="text-muted fw-bold small me-2"><i class="fa-solid fa-filter"></i> Filter Kelas:</span>
                     <span class="chip-filter" @click="searchSiswaInput=''">Semua</span>
@@ -937,7 +931,6 @@ createApp({
         },
         filteredListSiswa() {
             let arr = this.listSiswa;
-            // Khusus guru hanya tampilkan siswa di kelasnya
             if (this.session.role === 'guru' && this.session.kelas) {
                 arr = arr.filter(x => x.kelas.toLowerCase() === this.session.kelas.toLowerCase());
             }
@@ -1006,7 +999,6 @@ createApp({
             
             let arr = Object.values(groups);
             
-            // Filter otomatis khusus role guru
             if (this.session.role === 'guru' && this.session.kelas) {
                 arr = arr.filter(g => g.kelas.toLowerCase() === this.session.kelas.toLowerCase());
             }
@@ -1392,11 +1384,11 @@ createApp({
         async loadDashboard() {
             this.loading = true;
             try {
-                const res = await this.apiCall('getDashboardStats', { role: this.session.role, namaUser: this.session.nama });
+                const res = await this.apiCall('getDashboardStats', { role: this.session.role, namaUser: this.session.nama, kelas: this.session.kelas });
                 this.loading = false;
                 if(res.success) {
                     this.stats = res;
-                    this.$nextTick(() => { if(this.view === 'dashboard' && this.session.role !== 'guru') this.renderChart(); });
+                    this.$nextTick(() => { if(this.view === 'dashboard' && this.session.role !== 'siswa') this.renderChart(); });
                 }
             } catch(err) { this.loading = false; }
         },

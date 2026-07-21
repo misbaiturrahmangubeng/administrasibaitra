@@ -389,7 +389,7 @@
                                         <td colspan="5" class="p-0">
                                             <div class="row-child-container">
                                                 <table class="table table-sm table-bordered bg-white mb-0">
-                                                    <thead class="bg-light"><tr><th>Tanggal</th><th>Mutasi</th><th>Sisa Saldo</th><th>Keterangan</th><th v-if="session.role === 'admin' || session.role === 'bendahara'" class="text-center">Aksi</th></tr></thead>
+                                                    <thead class="bg-light"><tr><th>Tanggal</th><th>Mutasi</th><th>Sisa Saldo</th><th>Keterangan</th><th v-if="session.role === 'admin' || session.role === 'bendahara' || session.role === 'guru'" class="text-center">Aksi</th></tr></thead>
                                                     <tbody>
                                                         <tr v-for="row in g.details" :key="row[0]">
                                                             <td>{{ row[idxTabungan.tgl !== -1 ? idxTabungan.tgl : 1] }}</td>
@@ -398,7 +398,7 @@
                                                             </td>
                                                             <td class="fw-bold">{{ formatRp(idxTabungan.saldo !== -1 ? row[idxTabungan.saldo] : row._virtualSaldo) }}</td>
                                                             <td style="white-space: pre-wrap;">{{ row[idxTabungan.ket !== -1 ? idxTabungan.ket : 4] }}</td>
-                                                            <td v-if="session.role === 'admin' || session.role === 'bendahara'" class="text-center" style="white-space: nowrap;">
+                                                            <td v-if="session.role === 'admin' || session.role === 'bendahara' || session.role === 'guru'" class="text-center" style="white-space: nowrap;">
                                                                 <button @click="openModal('edit', row)" class="btn btn-primary btn-action shadow-sm text-white" style="background:#8e44ad; border:none;"><i class="fa-solid fa-pen-to-square"></i></button>
                                                                 <button @click="deleteData(row[0], view)" class="btn btn-danger btn-action shadow-sm text-white ms-1"><i class="fa-solid fa-trash-can"></i></button>
                                                             </td>

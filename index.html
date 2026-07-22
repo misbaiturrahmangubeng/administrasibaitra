@@ -3,7 +3,7 @@
 <head>
     <title>Sistem Keuangan | MIS BAITURRAHMAN GUBENG</title>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <base target="_top">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
@@ -21,9 +21,14 @@
             --header-bg: linear-gradient(90deg, #8e44ad, #d2b4de);
             --bg-light: linear-gradient(135deg, #fdebd0 0%, #f4ecf7 100%);
         }
-        body { font-family: 'Poppins', sans-serif; background: var(--bg-light); background-attachment: fixed; font-size: 13px; color: #333; overflow-x: hidden; margin:0; padding:0; }
+        body, html { 
+            font-family: 'Poppins', sans-serif; 
+            background: var(--bg-light); background-attachment: fixed; 
+            font-size: 13px; color: #333; margin:0; padding:0;
+            height: 100%; height: 100dvh; overflow: hidden; /* Flex/MacBook Fix */
+        }
         
-        .wrapper { display: flex; height: 100vh; overflow: hidden; position: relative; }
+        .wrapper { display: flex; height: 100%; height: 100dvh; overflow: hidden; position: relative; width: 100%; }
         #sidebar { width: 250px; background: var(--sidebar-bg); color: #fff; overflow-y: auto; transition: transform 0.3s ease; flex-shrink: 0; z-index: 1050; }
         .sidebar-brand { background: #311432; padding: 15px 20px; text-align: center; }
         .menu-header { font-size: 10px; text-transform: uppercase; color: #d7bde2; padding: 15px 20px 5px; font-weight: bold; }
@@ -33,29 +38,29 @@
         .sidebar-overlay { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5); z-index: 1040; }
         
         @media (max-width: 768px) {
-            #sidebar { position: fixed; height: 100vh; transform: translateX(-100%); }
+            #sidebar { position: fixed; height: 100dvh; transform: translateX(-100%); }
             #sidebar.open { transform: translateX(0); }
             .sidebar-overlay.show { display: block; }
             .dash-card { margin-bottom: 15px; }
             .btn-action { margin-bottom: 5px; }
         }
         
-        #content { flex: 1; display: flex; flex-direction: column; overflow-y: auto; width: 100%; }
-        .top-navbar { background: var(--header-bg); height: 50px; display: flex; align-items: center; padding: 0 20px; color: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); z-index: 10; }
+        #content { flex: 1; display: flex; flex-direction: column; overflow-y: auto; width: 100%; height: 100dvh; }
+        .top-navbar { background: var(--header-bg); min-height: 50px; display: flex; align-items: center; padding: 0 20px; color: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); z-index: 10; flex-shrink: 0; }
         .main-container { padding: 20px; flex: 1; }
         
         .card-custom { background: rgba(255, 255, 255, 0.95); border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; border: none; }
-        .dash-card { padding: 20px; border-radius: 8px; color: #fff; position: relative; overflow: hidden; }
-        .dash-card h3 { margin: 0; font-weight: 700; font-size: 22px; }
+        .dash-card { padding: 20px; border-radius: 8px; color: #fff; position: relative; overflow: hidden; height: 100%; }
+        .dash-card h3 { margin: 0; font-weight: 700; font-size: 20px; }
         .dash-card p { margin: 0; font-size: 12px; opacity: 0.9; }
-        .dash-card i { position: absolute; right: 15px; top: 15px; font-size: 45px; opacity: 0.2; }
+        .dash-card i { position: absolute; right: 15px; top: 15px; font-size: 40px; opacity: 0.2; }
         .bg-blue { background: #3498db; } .bg-green { background: #2ecc71; } .bg-yellow { background: #f1c40f; color: #333;}
         .bg-orange { background: #f39c12; } .bg-red { background: #e74c3c; } .bg-purple { background: #9b59b6; }
         
         [v-cloak] { display: none; }
         .loading-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.8); z-index:9999; display:flex; flex-direction: column; align-items:center; justify-content:center; }
         .modal-custom { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index: 1060; display:flex; align-items:center; justify-content:center; }
-        .modal-body-custom { background:#fff; width: 95%; max-width: 750px; border-radius: 10px; padding: 25px; max-height: 90vh; overflow-y: auto; }
+        .modal-body-custom { background:#fff; width: 95%; max-width: 750px; border-radius: 10px; padding: 25px; max-height: 85vh; overflow-y: auto; }
         .modal-body-custom.sm { max-width: 500px; }
         .swal2-container { z-index: 99999 !important; }
         
@@ -105,7 +110,7 @@
         <div class="mt-2 fw-bold" style="color: #8e44ad;">Memproses Data...</div>
     </div>
     
-    <div v-if="!isLoggedIn" class="d-flex align-items-center justify-content-center" style="height: 100vh;">
+    <div v-if="!isLoggedIn" class="d-flex align-items-center justify-content-center" style="height: 100dvh;">
         <div class="card card-custom p-4 shadow-lg" style="width: 350px;">
             <div class="text-center mb-4">
                 <img src="https://lh3.googleusercontent.com/d/18e1v76BALeQYgi3J4cvN5KE94tdBcR4W" width="80" style="border-radius: 50%; margin-bottom: 10px;" onerror="this.src='https://via.placeholder.com/80/8e44ad/ffffff?text=BI'">
@@ -191,29 +196,31 @@
                         <i class="fa-solid fa-chalkboard-user me-2"></i> Dashboard difilter khusus untuk rekapan siswa kelas: <strong>{{ session.kelas }}</strong>
                     </div>
 
+                    <!-- Bootstrap Fluid Grid Layout for Dashboard Cards (Optimized for Mac/Safari) -->
                     <div class="row g-3 mb-4" v-if="session.role !== 'siswa'">
-                        <div class="col-md-2 col-6" style="width: 16.66%; min-width: 150px;">
-                            <div class="dash-card bg-blue shadow"><i class="fa-solid fa-wallet"></i><h3>{{ formatRp(stats.summary.saldo) }}</h3><p>Saldo Kas Akhir</p></div>
+                        <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6 col-6">
+                            <div class="dash-card bg-blue shadow"><i class="fa-solid fa-wallet"></i><h3>{{ formatRp(stats.summary.saldo) }}</h3><p>Saldo Kas</p></div>
                         </div>
-                        <div class="col-md-2 col-6" style="width: 16.66%; min-width: 150px;">
+                        <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6 col-6">
                             <div class="dash-card bg-green shadow"><i class="fa-solid fa-hand-holding-dollar"></i><h3>{{ formatRp(stats.summary.pendapatan) }}</h3><p>Total Pemasukan</p></div>
                         </div>
-                        <div class="col-md-2 col-6" style="width: 16.66%; min-width: 150px;">
+                        <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6 col-6">
                             <div class="dash-card bg-yellow shadow text-dark"><i class="fa-solid fa-file-invoice-dollar" style="opacity: 0.3;"></i><h3>{{ formatRp(stats.summary.tagihan) }}</h3><p>TOTAL TAGIHAN</p></div>
                         </div>
-                        <div class="col-md-2 col-6" style="width: 16.66%; min-width: 150px;">
+                        <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6 col-6">
                             <div class="dash-card bg-orange shadow"><i class="fa-solid fa-cart-arrow-down"></i><h3>{{ formatRp(stats.summary.pengeluaran) }}</h3><p>Total Pengeluaran</p></div>
                         </div>
-                        <div class="col-md-2 col-6" style="width: 16.66%; min-width: 150px;">
+                        <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6 col-6">
                             <div class="dash-card bg-red shadow"><i class="fa-solid fa-scale-balanced"></i><h3>{{ formatRp(stats.summary.labaRugi) }}</h3><p>Laba / Rugi Bersih</p></div>
                         </div>
-                        <div class="col-md-2 col-6" style="width: 16.66%; min-width: 150px;">
+                        <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6 col-6">
                             <div class="dash-card bg-purple shadow"><i class="fa-solid fa-piggy-bank"></i><h3>{{ formatRp(stats.summary.totalTabungan) }}</h3><p>Total Tabungan</p></div>
                         </div>
                     </div>
+                    
                     <div class="row g-3 mb-4" v-if="session.role === 'siswa'">
                         <div class="col-md-3 col-6">
-                            <div class="dash-card bg-green shadow"><i class="fa-solid fa-hand-holding-dollar"></i><h3>{{ formatRp(stats.summary.pendapatan) }}</h3><p>Total Telah Dibayar</p></div>
+                            <div class="dash-card bg-green shadow"><i class="fa-solid fa-hand-holding-dollar"></i><h3>{{ formatRp(stats.summary.pendapatan) }}</h3><p>Telah Dibayar</p></div>
                         </div>
                         <div class="col-md-3 col-6">
                             <div class="dash-card bg-red shadow"><i class="fa-solid fa-triangle-exclamation"></i><h3>{{ formatRp(stats.summary.kurang) }}</h3><p>TOTAL KEKURANGAN</p></div>
@@ -222,9 +229,10 @@
                             <div class="dash-card bg-blue shadow"><i class="fa-solid fa-file-invoice-dollar"></i><h3>{{ formatRp(stats.summary.tagihan) }}</h3><p>TOTAL TAGIHAN</p></div>
                         </div>
                         <div class="col-md-3 col-6">
-                            <div class="dash-card bg-purple shadow"><i class="fa-solid fa-piggy-bank"></i><h3>{{ formatRp(stats.summary.totalTabungan) }}</h3><p>Total Tabungan Saya</p></div>
+                            <div class="dash-card bg-purple shadow"><i class="fa-solid fa-piggy-bank"></i><h3>{{ formatRp(stats.summary.totalTabungan) }}</h3><p>Total Tabungan</p></div>
                         </div>
                     </div>
+
                     <div class="row g-3" v-if="session.role !== 'siswa'">
                         <div class="col-md-8">
                             <div class="card-custom p-4 h-100">
@@ -248,7 +256,9 @@
                         <div class="col-md-4">
                             <div class="card-custom p-4 h-100 text-center">
                                 <h6 class="fw-bold mb-3"><i class="fa-solid fa-chart-pie me-2" style="color: #8e44ad;"></i>Grafik Pendapatan</h6>
-                                <canvas id="chartIncome" style="max-height: 220px; width:100%;"></canvas>
+                                <div style="position: relative; height: 220px; width: 100%;">
+                                    <canvas id="chartIncome"></canvas>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -866,9 +876,10 @@
                             </select>
                             
                             <div v-else-if="head.toLowerCase().includes('nama') && view === 'tabungan'">
+                                <!-- PERBAIKAN: Gunakan datalist terpisah (siswaDatalist) khusus untuk filter tabungan -->
                                 <input type="text" :list="'datalist-siswa-' + i" v-model="modal.formData[i]" class="form-control bg-light" placeholder="Ketik/Pilih Nama Siswa...">
                                 <datalist :id="'datalist-siswa-' + i">
-                                    <option v-for="s in listSiswa" :value="s.nama">{{ s.nis }} - {{ s.kelas }}</option>
+                                    <option v-for="s in siswaDatalist" :value="s.nama">{{ s.nis }} - {{ s.kelas }}</option>
                                 </datalist>
                             </div>
                             <select v-else-if="(head.toLowerCase().includes('kategori') || head.toLowerCase().includes('jenis')) && view === 'pengeluaran'" v-model="modal.formData[i]" class="form-select bg-light">
@@ -943,6 +954,13 @@ createApp({
             if (!this.searchSiswaInput) return arr;
             let s = this.searchSiswaInput.toLowerCase();
             return arr.filter(x => x.nama.toLowerCase().includes(s) || x.nis.toString().toLowerCase().includes(s) || x.kelas.toLowerCase().includes(s));
+        },
+        // PERBAIKAN: Computed khusus untuk input manual mutasi tabungan
+        siswaDatalist() {
+            if (this.session.role === 'guru' && this.session.kelas) {
+                return this.listSiswa.filter(x => x.kelas.toLowerCase() === this.session.kelas.toLowerCase());
+            }
+            return this.listSiswa;
         },
         filteredGroupedHistory() {
             let groups = {};
@@ -1240,6 +1258,7 @@ createApp({
             this.$nextTick(() => { window.print(); });
         },
         async fetchDaftarKelas() {
+            if(this.listKelas.length > 0) return; // Cache agar tidak redundant loading
             try {
                 const res = await this.apiCall('getDaftarKelas');
                 this.listKelas = res;
@@ -1284,6 +1303,14 @@ createApp({
         },
         async bukaModalPilihSiswa(context) {
             this.modalSiswa.context = context;
+            
+            // PERBAIKAN: Gunakan local state jika list siswa sudah tersedia (Mempercepat load)
+            if(this.listSiswa.length > 0) {
+                this.modalSiswa.show = true;
+                if((context === 'tagihan' || context === 'bayar') && this.listKelas.length === 0) this.fetchDaftarKelas();
+                return;
+            }
+
             this.loading = true;
             try {
                 const res = await this.apiCall('getDaftarSiswa');
@@ -1377,7 +1404,11 @@ createApp({
                 if(res.success) {
                     this.tableData = { header: res.header, body: res.body };
                     
-                    if(targetModule === 'tagihan_siswa' || targetModule === 'tabungan') {
+                    // PERBAIKAN: Gunakan data batching (res.extra) jika modul mengirimkannya, ini menghemat request API ~3-5 detik
+                    if (res.extra) {
+                        if (res.extra.listSiswa) this.listSiswa = res.extra.listSiswa;
+                        if (res.extra.listKelas) this.listKelas = res.extra.listKelas;
+                    } else if(targetModule === 'tagihan_siswa' || targetModule === 'tabungan') {
                         if(this.listKelas.length === 0) this.fetchDaftarKelas();
                         if(this.listSiswa.length === 0) {
                             const resSiswa = await this.apiCall('getDaftarSiswa');
